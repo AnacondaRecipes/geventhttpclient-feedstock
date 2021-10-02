@@ -1,5 +1,5 @@
 {% set name = "geventhttpclient" %}
-{% set version = "1.4.5" %}
+{% set version = "1.5.2" %}
 
 package:
   name: {{ name }}
@@ -7,9 +7,9 @@ package:
 
 source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: 3f0ab18d84ef26ba0c9df73ae2a41ba30a46072b447f2e36c740400de4a63d44
+    sha256: f3c5884d62be75162426728e3d86788740b13e363b197ef592f1443dba240709
   - url: https://raw.githubusercontent.com/gwik/{{ name }}/master/LICENSE-MIT
-    sha256: 5a2f8f840ffb3e61c0f4aa3df14fff2c0bc28bdcf5d0d1e6582dab418aa79e3c
+    sha256: f3c5884d62be75162426728e3d86788740b13e363b197ef592f1443dba240709
 
 build:
   number: 0
