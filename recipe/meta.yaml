@@ -8,12 +8,12 @@ package:
 source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
     sha256: 3f0ab18d84ef26ba0c9df73ae2a41ba30a46072b447f2e36c740400de4a63d44
-  - url: https://raw.githubusercontent.com/gwik/{{ name }}/master/LICENSE-MIT
-    sha256: 5a2f8f840ffb3e61c0f4aa3df14fff2c0bc28bdcf5d0d1e6582dab418aa79e3c
+  - url: https://raw.githubusercontent.com/{{ name }}/{{ name }}/master/LICENSE.txt
+    sha256: ae64cc65b9d6623cf0e9e6e90f56cac626cd1fd088d48d0585902c266ec898e3
 
 build:
-  number: 0
-  script: {{ PYTHON }} -m pip install . -vv
+  number: 1
+  script: {{ PYTHON }} -m pip install . -vv --no-deps
 
 requirements:
   build:
@@ -22,6 +22,8 @@ requirements:
   host:
     - python
     - pip
+    - setuptools
+    - wheel
   run:
     - python
     - gevent >=0.13
@@ -37,10 +39,10 @@ test:
     - python -m pip check
 
 about:
-  home: https://github.com/gwik/geventhttpclient
+  home: https://github.com/geventhttpclient/geventhttpclient
   license: MIT
   license_family: MIT
-  license_file: LICENSE-MIT
+  license_file: LICENSE.txt
   summary: A high performance, concurrent http client library for python with gevent
 
   # The remaining entries in this section are optional, but recommended.
@@ -62,6 +64,8 @@ about:
     Python 2.7 and 3.4+ are supported. Python 2.6 is no longer supported.
 
     Use of SSL/TLS with python 2.7.9 is not recommended and may be broken.
+  dev_url: https://github.com/geventhttpclient/geventhttpclient
+  doc_url: https://github.com/geventhttpclient/geventhttpclient/blob/master/README.mdown
 
 extra:
   recipe-maintainers:
