@@ -39,7 +39,7 @@ test:
     - python -m pip check
 
 about:
-  home: https://github.com/gwik/geventhttpclient
+  home: https://github.com/geventhttpclient/geventhttpclient
   license: MIT
   license_family: MIT
   license_file: LICENSE.txt
@@ -64,6 +64,8 @@ about:
     Python 2.7 and 3.4+ are supported. Python 2.6 is no longer supported.
 
     Use of SSL/TLS with python 2.7.9 is not recommended and may be broken.
+  dev_url: https://github.com/geventhttpclient/geventhttpclient
+  doc_url: https://github.com/geventhttpclient/geventhttpclient/blob/master/README.mdown
 
 extra:
   recipe-maintainers:
