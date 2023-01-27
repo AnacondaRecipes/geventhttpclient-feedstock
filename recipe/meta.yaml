@@ -9,7 +9,7 @@ source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
     sha256: 3f0ab18d84ef26ba0c9df73ae2a41ba30a46072b447f2e36c740400de4a63d44
   - url: https://raw.githubusercontent.com/{{ name }}/{{ name }}/master/LICENSE.txt
-    sha256: 5a2f8f840ffb3e61c0f4aa3df14fff2c0bc28bdcf5d0d1e6582dab418aa79e3c
+    sha256: ae64cc65b9d6623cf0e9e6e90f56cac626cd1fd088d48d0585902c266ec898e3
 
 build:
   number: 1
