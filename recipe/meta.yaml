@@ -13,8 +13,6 @@ build:
   number: 0
   skip: true  # [py<39 or py>=313]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
-  # ignore_run_exports:
-  #   - libcxx  # [osx]
 
 requirements:
   build:
@@ -28,20 +26,35 @@ requirements:
     - wheel
   run:
     - python
-    - gevent
+    - gevent >=23.9.1
     - certifi
-    - brotli
+    - brotli-python
     - urllib3
 
-# test:
-#   requires:
-#     - pip
-#     - pytest
-#     - brotli
-#   imports:
-#     - geventhttpclient
-#   commands:
-#     - pip check
+# sdist have not all tests files to complete testing,
+# so that test files used tests.common imports have been removed
+{% set SKIP_TEST_FILES = [
+    "tests/test_client.py",
+    "tests/test_httplib.py",
+    "tests/test_network_failures.py",
+    "tests/test_requests.py",
+    "tests/test_ssl.py",
+    "tests/test_useragent.py"
+] %}
+
+test:
+  source_files:
+    - tests
+  requires:
+    - pip
+    - pytest
+    - brotli-python
+  imports:
+    - geventhttpclient
+  commands:
+    - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest tests {% for file in SKIP_TEST_FILES %} --ignore={{ file }}{% endfor %} -v
 
 about:
   home: https://github.com/geventhttpclient/geventhttpclient
