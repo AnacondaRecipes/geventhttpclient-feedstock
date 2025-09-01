@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/geventhttpclient-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 1749f75810435a001fc6d4d7526c92cf02b39b30ab6217a886102f941c874222
 
 build:
@@ -25,7 +25,7 @@ requirements:
     - wheel
   run:
     - python
-    - gevent >=23.9.1
+    - gevent
     - certifi
     - brotli-python
     - urllib3
