@@ -18,7 +18,6 @@ requirements:
   build:
     - {{ stdlib('c') }}
     - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
   host:
     - python
     - pip
@@ -51,6 +50,16 @@ test:
     - brotli-python
   imports:
     - geventhttpclient
+    - geventhttpclient._parser
+    - geventhttpclient.api
+    - geventhttpclient.client
+    - geventhttpclient.connectionpool
+    - geventhttpclient.header
+    - geventhttpclient.httplib
+    - geventhttpclient.requests
+    - geventhttpclient.response
+    - geventhttpclient.url
+    - geventhttpclient.useragent
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
