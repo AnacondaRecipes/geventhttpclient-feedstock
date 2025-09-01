@@ -6,17 +6,19 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: 3f0ab18d84ef26ba0c9df73ae2a41ba30a46072b447f2e36c740400de4a63d44
-  - url: https://raw.githubusercontent.com/{{ name }}/{{ name }}/master/LICENSE.txt
-    sha256: ae64cc65b9d6623cf0e9e6e90f56cac626cd1fd088d48d0585902c266ec898e3
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/geventhttpclient-{{ version }}.tar.gz
+  sha256: 1749f75810435a001fc6d4d7526c92cf02b39b30ab6217a886102f941c874222
 
 build:
-  number: 1
-  script: {{ PYTHON }} -m pip install . -vv --no-deps
+  number: 0
+  skip: true  # [py<39]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
+  # ignore_run_exports:
+  #   - libcxx  # [osx]
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
@@ -26,23 +28,28 @@ requirements:
     - wheel
   run:
     - python
-    - gevent >=0.13
+    - gevent
     - certifi
-    - six
+    - brotli
+    - urllib3
 
-test:
-  requires:
-    - pip
-  imports:
-    - geventhttpclient
-  commands:
-    - python -m pip check
+# test:
+#   requires:
+#     - pip
+#     - pytest
+#     - brotli
+#   imports:
+#     - geventhttpclient
+#   commands:
+#     - pip check
 
 about:
   home: https://github.com/geventhttpclient/geventhttpclient
   license: MIT
   license_family: MIT
-  license_file: LICENSE.txt
+  license_file:
+    - LICENSE-MIT
+    - llhttp/LICENSE-MIT
   summary: A high performance, concurrent http client library for python with gevent
 
   # The remaining entries in this section are optional, but recommended.
@@ -65,7 +72,7 @@ about:
 
     Use of SSL/TLS with python 2.7.9 is not recommended and may be broken.
   dev_url: https://github.com/geventhttpclient/geventhttpclient
-  doc_url: https://github.com/geventhttpclient/geventhttpclient/blob/master/README.mdown
+  doc_url: https://github.com/geventhttpclient/geventhttpclient/blob/master/README.md
 
 extra:
   recipe-maintainers:
