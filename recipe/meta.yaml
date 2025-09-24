@@ -53,35 +53,19 @@ requirements:
     "tests/test_useragent.py",
 ] %}
 
-{% set SKIP_TEST_OSX = [
-    "test_read_multiple_header",
-    "test_cookielib_compatibility",
-    "test_compatibility_with_previous_api_read",
-    "test_keep_alive_http_10_without_header",
-    "test_keep_alive_bodyless_response_with_body",
-    "test_keep_alive_bodyless_10x_request_with_body",
-    "test_close_connection_and_no_content_length",
+{% set SKIP_TEST_LIST = [
     "test_parse_error",
     "test_incomplete_response",
     "test_parse_small_blocks",
     "test_close_connection_with_content_length",
+    "test_keep_alive_http_10_without_header",
+    "test_keep_alive_bodyless_response_with_body",
+    "test_keep_alive_bodyless_10x_request_with_body",
+    "test_close_connection_and_no_content_length",
+    "test_read_multiple_header",
+    "test_cookielib_compatibility",
+    "test_compatibility_with_previous_api_read",
 ] %}
-
-{% set SKIP_TEST_LINUX = [
-  "stub"
-] %}
-
-{% set SKIP_TEST_WIN = [
-  "stub"
-] %}
-
-{% set SKIP_TEST_LIST = [
-] %}
-
-{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_OSX %}  # [osx]
-{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_LINUX %}  # [linux]
-{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_WIN %}  # [win]
-
 
 test:
   source_files:
