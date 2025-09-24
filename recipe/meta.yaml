@@ -68,9 +68,11 @@ requirements:
 ] %}
 
 {% set SKIP_TEST_LINUX = [
+  "stub"
 ] %}
 
 {% set SKIP_TEST_WIN = [
+  "stub"
 ] %}
 
 {% set SKIP_TEST_LIST = [
