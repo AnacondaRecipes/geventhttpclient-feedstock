@@ -1,0 +1,41 @@
+diff --git a/ext/_parser.c b/ext/_parser.c
+index b3d687c..3c101b8 100644
+--- a/ext/_parser.c
++++ b/ext/_parser.c
+@@ -2,6 +2,7 @@
+ #include <Python.h>
+ #include "Python_compat.h"
+ #include <llhttp.h>
++#include <stddef.h>  /* for size_t */
+ #include <stdio.h>
+ 
+ static PyObject * PyExc_HTTPParseError;
+@@ -141,15 +142,26 @@ static int on_body(llhttp_t* parser, const char *at, size_t length)
+     return fail;
+ }
+ 
++
++static int on_headers_complete_data(llhttp_t* p, const char* at, size_t length) {
++    (void)at; (void)length;
++    return on_headers_complete(p);
++}
++
++static int on_message_complete_data(llhttp_t* p, const char* at, size_t length) {
++    (void)at; (void)length;
++    return on_message_complete(p);
++}
++
+ static llhttp_settings_t _parser_settings = {
+     on_message_begin,
+     NULL, // on_url
+     on_status,
+     on_header_field,
+     on_header_value,
+-    on_headers_complete,
++    on_headers_complete_data,
+     on_body,
+-    on_message_complete
++    on_message_complete_data
+ };
+ 
+ static PyObject*

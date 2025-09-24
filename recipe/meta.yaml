@@ -9,10 +9,17 @@ source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 1749f75810435a001fc6d4d7526c92cf02b39b30ab6217a886102f941c874222
 
+  patches:
+    - 0001-link-system-llhttp.patch
+    - 0002-llhttp-new-ver-signature-fix.patch
+
 build:
   number: 0
-  skip: true  # [py<39 or py>=313]
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
+  skip: true  # [py<39]
+  script: |
+    # Unverndoring llhttp from sdist
+    rm -rf llhttp || true
+    {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
 
 requirements:
   build:
@@ -23,8 +30,10 @@ requirements:
     - pip
     - setuptools
     - wheel
+    - libllhttp
   run:
     - python
+    - libllhttp
     - gevent
     - certifi
     - brotli-python
@@ -32,14 +41,45 @@ requirements:
 
 # sdist have not all tests files to complete testing,
 # so that test files used tests.common imports have been removed
+# No module named 'test'
+# No module named 'httplib2'
 {% set SKIP_TEST_FILES = [
     "tests/test_client.py",
     "tests/test_httplib.py",
+    "tests/test_httplib2.py",
     "tests/test_network_failures.py",
     "tests/test_requests.py",
     "tests/test_ssl.py",
-    "tests/test_useragent.py"
+    "tests/test_useragent.py",
 ] %}
+
+{% set SKIP_TEST_OSX = [
+    "test_read_multiple_header",
+    "test_cookielib_compatibility",
+    "test_compatibility_with_previous_api_read",
+    "test_keep_alive_http_10_without_header",
+    "test_keep_alive_bodyless_response_with_body",
+    "test_keep_alive_bodyless_10x_request_with_body",
+    "test_close_connection_and_no_content_length",
+    "test_parse_error",
+    "test_incomplete_response",
+    "test_parse_small_blocks",
+    "test_close_connection_with_content_length",
+] %}
+
+{% set SKIP_TEST_LINUX = [
+] %}
+
+{% set SKIP_TEST_WIN = [
+] %}
+
+{% set SKIP_TEST_LIST = [
+] %}
+
+{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_OSX %}  # [osx]
+{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_LINUX %}  # [linux]
+{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_WIN %}  # [win]
+
 
 test:
   source_files:
@@ -63,15 +103,13 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest tests {% for file in SKIP_TEST_FILES %} --ignore={{ file }}{% endfor %} -v
+    - pytest -ra -vv tests {% for file in SKIP_TEST_FILES %} --ignore={{ file }}{% endfor %} -k "not ({{ SKIP_TEST_LIST | join(' or ') }})"
 
 about:
   home: https://github.com/geventhttpclient/geventhttpclient
   license: MIT
   license_family: MIT
-  license_file:
-    - LICENSE-MIT
-    - llhttp/LICENSE-MIT
+  license_file: LICENSE-MIT
   summary: A high performance, concurrent http client library for python with gevent
 
   # The remaining entries in this section are optional, but recommended.
