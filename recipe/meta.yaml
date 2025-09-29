@@ -53,6 +53,40 @@ requirements:
     "tests/test_useragent.py",
 ] %}
 
+# FAILED tests/test_headers.py::test_read_multiple_header - KeyError: 'set-cookie'
+# FAILED tests/test_headers.py::test_cookielib_compatibility - assert 0 == 3
+#  +  where 0 = len([])
+# FAILED tests/test_headers.py::test_compatibility_with_previous_api_read - KeyError: 'content-encoding'
+# FAILED tests/test_keep_alive.py::test_keep_alive_http_10_without_header - assert False
+#  +  where False = <HTTPResponse status=200 headers={}>.message_complete
+# FAILED tests/test_keep_alive.py::test_keep_alive_bodyless_response_with_body - _parser.HTTPParseError: (None, 1)
+# FAILED tests/test_keep_alive.py::test_keep_alive_bodyless_10x_request_with_body - assert False
+#  +  where False = should_close()
+#  +    where should_close = <HTTPResponse status=100 headers={}>.should_close
+# FAILED tests/test_keep_alive.py::test_close_connection_and_no_content_length - AssertionError: assert bytearray(b'Connection') == bytearray(b'Hello World!')
+#   At index 0 diff: 67 != 72
+#   Right contains 2 more items, first extra item: 100
+
+#   Full diff:
+#   - bytearray(b'Hello World!')
+#   + bytearray(b'Connection')
+# FAILED tests/test_keep_alive.py::test_close_connection_with_content_length - AssertionError: assert bytearray(b'Content-lengthConnection') == bytearray(b'12345')
+
+#   At index 0 diff: 67 != 49
+#   Left contains 19 more items, first extra item: 110
+
+#   Full diff:
+#   - bytearray(b'12345')
+#   + bytearray(b'Content-lengthConnection')
+# FAILED tests/test_parser.py::test_parse_small_blocks - AssertionError: assert [] == [('Cache-Control', 'public, max-age=2592000'), ('Content-Length', '218'), ('Content-Type', 'text/html; charset=UTF-8'), ('Date', 'Thu, 13 Oct 2011 15:03:12 GMT'), ('Expires', 'Sat, 12 Nov 2011 15:03:12 GMT'), ('Location', 'http://www.google.fr/'), ('Server', 'gws'), ('X-XSS-Protection', '1; mode=block')]
+
+#   Right contains 8 more items, first extra item: ('Cache-Control', 'public, max-age=2592000')
+
+# FAILED tests/test_parser.py::test_parse_error - assert 'Invalid response status' in "('Invalid status code', 13)"
+#  +  where "('Invalid status code', 13)" = str(HTTPParseError('Invalid status code', 13))
+# FAILED tests/test_parser.py::test_incomplete_response - assert False
+#  +  where False = should_close()
+#  +    where should_close = <HTTPResponse status=200 headers={}>.should_close
 {% set SKIP_TEST_LIST = [
     "test_parse_error",
     "test_incomplete_response",
