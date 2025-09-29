@@ -1,0 +1,56 @@
+diff --git a/setup.py b/setup.py
+index bd8caee..64d3782 100644
+--- a/setup.py
++++ b/setup.py
+@@ -1,21 +1,36 @@
+ from distutils.core import setup
+-
+ from setuptools.extension import Extension
++import os
++import sysconfig
++
++# link against system libllhttp from the conda env (package: libllhttp)
++prefix = (
++    os.environ.get("PREFIX")
++    or os.environ.get("CONDA_PREFIX")
++    or sysconfig.get_config_var("prefix")
++    or ""
++)
++
++include_dirs = ["ext"]
++library_dirs = []
++libraries = ["llhttp"]  # -lllhttp everywhere
++
++if prefix:
++    if os.name == "nt":
++        # Windows: <env>\Library\include, <env>\Library\lib
++        include_dirs.append(os.path.join(prefix, "Library", "include", "llhttp"))
++        library_dirs.append(os.path.join(prefix, "Library", "lib"))
++    else:
++        # POSIX: <env>/include, <env>/lib
++        include_dirs.append(os.path.join(prefix, "include", "llhttp"))
++        library_dirs.append(os.path.join(prefix, "lib"))
+ 
+ http_parser = Extension(
+     "geventhttpclient._parser",
+-    sources=[
+-        "ext/_parser.c",
+-        "llhttp/src/api.c",
+-        "llhttp/src/http.c",
+-        "llhttp/src/llhttp.c",
+-    ],
+-    include_dirs=[
+-        "ext",
+-        "llhttp/include",
+-    ],
++    sources=["ext/_parser.c"],  # use only project C; llhttp is external now
++    include_dirs=include_dirs,
++    library_dirs=library_dirs,
++    libraries=libraries,
+ )
+ 
+-setup(
+-    ext_modules=[http_parser],
+-)
++setup(ext_modules=[http_parser])
+\ No newline at end of file
